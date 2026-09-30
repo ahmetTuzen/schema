@@ -77,4 +77,5 @@ Each directory contains its own `main.py` and argument configuration. Please ref
 
 Here you can find the basic usage:
 
-<TODO>
+python clustering/main.py --help
+python clustering/main.py --dataset cora_ml
