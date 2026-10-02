@@ -103,14 +103,6 @@ def build_loss_fn(args):
         return partial(masked_combined_loss, delta=delta, cosine_weight=cosine_weight)
     return losses[loss_name]
 
-def log_peak_rss(tag: str = ""):
-    """Log rss in MB. On Linux ru_maxrss is in kilobytes. Only tested in linux."""
-    import resource, logging
-    logger = logging.getLogger(__name__)
-    kb = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    logger.info(f"[mem]{' ' + tag if tag else ''} peak RSS: {kb / 1024:.1f} MB")
-
-
 _stage_logger = logging.getLogger('stage')
 
 @contextmanager

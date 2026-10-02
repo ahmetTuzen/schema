@@ -6,7 +6,6 @@ from trainer import node_training, intra_edge_training, inter_edge_training
 from generator import run_generation
 from utils import set_seed, stage_metrics
 
-import logging
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def compute_all_artifacts(tree: dict, leaf_labels: torch.Tensor, edge_index: torch.Tensor, x: torch.Tensor,
                           *,
-                          edge_weight: Optional[torch.Tensor] = None, n_steps: int = 3, alpha: float = 0.7, gnn_model=None) -> None:
+                          edge_weight: Optional[torch.Tensor] = None, n_steps: int = 3, alpha: float = 0.7) -> None:
     """
     Populate every internal TreeNode with S, x_pool, A_pool, for generation phases to use, maybe some additional fields for future uses.
 

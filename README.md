@@ -79,3 +79,6 @@ Here you can find the basic usage:
 
 python clustering/main.py --help
 python clustering/main.py --dataset cora_ml
+
+python generation/main.py --help
+python generation/main.py --dataset cora_ml

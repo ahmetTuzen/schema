@@ -2,7 +2,7 @@ import argparse
 import logging
 import math
 
-from typing import Dict, Optional
+from typing import Optional
 
 import torch
 import torch.nn as nn
@@ -71,13 +71,6 @@ def masked_bce_loss(logits, labels, mask):
     loss = F.binary_cross_entropy_with_logits(logits, labels, reduction='none')
     return (loss * mask.float()).sum() / mask.float().sum().clamp(min=1)
 
-
-def masked_kl_bernoulli(logits_p, logits_q, mask, eps: float = 1e-6):
-    """KL( p || q ) between Bernoulli(sigmoid(logits_p)) and Bernoulli(sigmoid(logits_q)) averaged over mask positions. """
-    p = torch.sigmoid(logits_p).clamp(eps, 1 - eps)
-    q = torch.sigmoid(logits_q).clamp(eps, 1 - eps)
-    kl = p * (p.log() - q.log()) + (1 - p) * ((1 - p).log() - (1 - q).log())
-    return (kl * mask.float()).sum() / mask.float().sum().clamp(min=1)
 
 
 def soft_entropy(S: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
@@ -153,7 +146,6 @@ class BaseInterEdgeGenerator(nn.Module):
         self.emb_dim = args.edge_emb_dim
         self.dropout = args.dropout
         self.prior_weight = args.prior_weight
-        self.kl_coef = args.prior_kl_coef
         self.s_threshold = args.s_threshold
         self.topk_nodes = args.topk_nodes
 
@@ -416,9 +408,7 @@ class SBilinearInterEdgeScorer(BaseInterEdgeGenerator):
             z_loc = z_loc_all # [N_loc, D], rows aligned with local_cands
 
             scores = self._score_matrix(z_loc, z_ext)
-
-            logger.info(f"[cal] {tuple(scores.shape)} p_mean={torch.sigmoid(scores).mean():.4f} p>0.5={float((torch.sigmoid(scores)>0.5).float().mean()):.4f}")
-
+            
             prior = soft_cluster_affinity(S[local_cands, cluster_id], S_pool_parent[ext_cands], A_pool[cluster_id])
             alpha = torch.sigmoid(self.prior_alpha)
             scores = scores + alpha * _log_prior(prior)

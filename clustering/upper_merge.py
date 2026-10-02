@@ -55,7 +55,6 @@ def build_upper_tree(sg: SupernodeGraph, stats: dict, branching_cap: int = 16, s
     stats : the dict returned by supernode.report()
     """
     K = sg.num_nodes # number of supernodes = number of leaf clusters
-    isolated_frac = stats["isolated"] / max(K, 1)
 
     if K <= branching_cap:
         logger.info(f"upper_merge: Leaf clusters are less than cap, flat (K={K} <= b={branching_cap})")

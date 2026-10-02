@@ -514,7 +514,7 @@ class IntraEdgeDataset(Dataset):
             attempts += num_neg
 
         if len(negs) < num_neg:
-            # We only get this warning from Citeseer dataset. We do not correct it. Lets say you have a graph with 3 nodes and all connected, we cannot sample negative.
+            # This happens for some graphs that has many components. We do not correct it. Lets say you have a graph with 3 nodes and all connected, we cannot sample negative.
             logger.warning(f"IntraEdge negative sampling undersampled: {len(negs)}/{num_neg} (N={N}, E={len(pos_pairs)})")
 
         return torch.tensor(negs, dtype=torch.long) if negs else torch.zeros(0, 2, dtype=torch.long)
@@ -586,6 +586,7 @@ def make_intra_edge_collate_fn(global_max_K: int, degree_mode: str = 'directed')
             'node_mask': torch.stack(nmask_list),
             'edge_mask': torch.stack(emask_list), # positives mask
             'neg_mask': torch.stack(nmask_neg_list), # negatives mask
+            'edge_index_list': [b['edge_index'] for b in batch],
             'degree_mode': degree_mode, # 'directed' | 'undirected' # might change it to boolean later
             }
 

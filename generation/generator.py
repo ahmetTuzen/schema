@@ -17,7 +17,6 @@ def run_generation(args, node_generator, intra_model, inter_model, node_dataload
         x_mean = x_mean,
         x_std = x_std,
         device = args.device,
-        normalize_nodes = args.denormalize_nodes,
     )
 
     # parsing which versions to generate (1-8) from comma-separated string
@@ -45,7 +44,7 @@ def run_generation(args, node_generator, intra_model, inter_model, node_dataload
     for v in versions:
         if v == 1:
             continue # already handled above
-        
+
         kwargs = dict(common_kwargs)
         if v in {2, 3, 4}:
             kwargs['inter_source'] = 'file'
