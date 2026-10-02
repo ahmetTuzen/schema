@@ -89,8 +89,6 @@ def _build_parser() -> argparse.ArgumentParser:
     gen_parser = parser.add_argument_group("Generation")
     gen_parser.add_argument("--num-generated", type=int, default=10, help="Number of samples to generate per version")
     gen_parser.add_argument("--versions", type=str, default="1,8", help="Comma-separated list of versions to generate, please check ablation study. best to leave at 1,8")
-    gen_parser.add_argument("--no-only-intra", dest="save_only_intra", action="store_false", default=True, help="Skip the only_intra sanity sample")
-    gen_parser.add_argument("--no-only-inter", dest="save_only_inter", action="store_false", default=True, help="Skip the only_inter sanity sample")
     gen_parser.add_argument("--denormalize-nodes", action="store_true", default=False, help="Flag for denormalizing nodes at the generation stage")
     gen_parser.add_argument("--out-dir", type=str, default=None, help="Dir for checkpoints + generated samples. Defaults to --data.")
 

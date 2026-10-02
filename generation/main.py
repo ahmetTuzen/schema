@@ -3,7 +3,7 @@ import logging
 from argument_parser import parse_args
 
 from trainer import node_training, intra_edge_training, inter_edge_training
-# from generator import run_generation
+from generator import run_generation
 from utils import set_seed, stage_metrics
 
 import logging
@@ -23,17 +23,17 @@ def main(args):
     with stage_metrics('inter_train'):
         inter_model, inter_loader = inter_edge_training(args, x_mean, x_std, skip_training=skip)
 
-    # with stage_metrics('generation'):
-    #     run_generation(
-    #         args=args,
-    #         node_generator=node_generator,
-    #         intra_model=intra_model,
-    #         inter_model=inter_model,
-    #         node_dataloader=node_dataloader,
-    #         inter_loader=inter_loader,
-    #         x_mean=x_mean,
-    #         x_std=x_std,
-    #     )
+    with stage_metrics('generation'):
+        run_generation(
+            args=args,
+            node_generator=node_generator,
+            intra_model=intra_model,
+            inter_model=inter_model,
+            node_dataloader=node_dataloader,
+            inter_loader=inter_loader,
+            x_mean=x_mean,
+            x_std=x_std,
+        )
 
 
 if __name__ == "__main__":

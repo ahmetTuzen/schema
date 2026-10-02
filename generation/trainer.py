@@ -6,10 +6,47 @@ import torch
 
 from checkpoint import _node_ckpt_path, _intra_ckpt_path, _inter_ckpt_path
 from dataset_handler import NodeDataLoader, IntraEdgeDataLoader, InterEdgeDataLoader
-from generator import _load_generated_x_for_intra
 from model_builder import _build_node_generator, _build_intra_edge_model, _build_inter_edge_model
 
 logger = logging.getLogger(__name__)
+
+
+def _load_generated_x(edge_loader, x_gen_path: str, x_mean, x_std, ):
+    """
+    Load generated node features and align them to each leaf's local row order via original_node_indices. 
+    """
+
+    logger.info(f"[intra] loading generated node features from {x_gen_path}")
+    generated = torch.load(x_gen_path, weights_only=False)
+
+    # If you follow clustering as it should, there should not be any problem on formats.
+ 
+    if isinstance(generated, dict) and all(isinstance(v, dict) and 'x' in v for v in generated.values()):
+        x_normalized = {}
+        for gid, info in generated.items():
+            x_raw = info['x'].to(x_mean.device)
+            x_normalized[gid] = (x_raw - x_mean) / x_std
+        return x_normalized
+ 
+    # Or PyG Data object
+    node_features = generated.x.to(x_mean.device) # [total_nodes, F]
+    original_idx = generated.original_node_indices.to(x_mean.device).long()
+ 
+    # inverse permutation: global ID -> row index in node_features
+    inv = torch.full((int(original_idx.max().item()) + 1,), -1, dtype=torch.long, device=x_mean.device)
+    inv[original_idx] = torch.arange(original_idx.shape[0], device=x_mean.device)
+ 
+    x_normalized = {}
+    for path, meta in zip(edge_loader.leaf_paths, edge_loader.leaf_meta):
+        leaf = torch.load(path, weights_only=False)
+        orig_idx = leaf.original_node_indices.to(x_mean.device).long()
+        x_gen_i = node_features[inv[orig_idx]]
+        x_normalized[meta['graph_id']] = (x_gen_i - x_mean) / x_std
+        del leaf
+ 
+    logger.info(f"[intra] loaded generated features for {len(x_normalized)} graphs")
+    return x_normalized
+
 
 
 def _move_batch(batch: dict, device: str) -> dict:
@@ -165,7 +202,7 @@ def intra_edge_training(args, x_mean: torch.Tensor, x_std: torch.Tensor, skip_tr
     if getattr(args, 'use_generated_x', False):
         x_gen_path = f"{args.out_dir}/{args.dataset}_{args.node_generator}_reconstructed.pt"
         if os.path.exists(x_gen_path):
-            x_generated = _load_generated_x_for_intra(edge_loader, x_gen_path, x_mean, x_std)
+            x_generated = _load_generated_x(edge_loader, x_gen_path, x_mean, x_std)
         else:
             logger.warning(f"[intra training] use_generated_x=True but {x_gen_path} does not exist. Falling back to batch['x'].")
 
