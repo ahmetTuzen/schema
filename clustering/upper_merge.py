@@ -282,7 +282,7 @@ def _attach_leaf(tree, ids, parent_id, level, leaf_cluster_id):
 def _induce_supernode_subgraph(sg: SupernodeGraph, supernode_ids):
     """
     Return (edge_index, edge_weight) of the supernode graph restricted to
-    `supernode_ids`. Re-indexed 0..len(supernode_ids)-1.
+    'supernode_ids'. Re-indexed 0..len(supernode_ids)-1.
     """
     device = sg.edge_index.device
 

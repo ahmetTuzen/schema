@@ -91,7 +91,7 @@ def enforce_max_leaf_size(g,
                           keep_frac: float = 0.95,
                           max_depth: int = 8) -> torch.Tensor:
     """
-    Split any cluster larger than `cap` by re-running community detection on its induced subgraph, recursively. 
+    Split any cluster larger than 'cap' by re-running community detection on its induced subgraph, recursively. 
     """
     if cap is None or cap <= 0:
         return labels

@@ -9,7 +9,7 @@ def parse_args():
 
     # Dataset related settings
     data_parser = parser.add_argument_group("Dataset")
-    data_parser.add_argument("--dataset", type=str, default="Citeseer", help="Dataset to use (Please check data_loader.py)")
+    data_parser.add_argument("--dataset", type=str, default="citeseer", help="Dataset to use (Please check data_loader.py)")
     data_parser.add_argument("--root_dir", type=str, default="./data", help="Root directory for datasets")
 
     # Clustering related settings

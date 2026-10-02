@@ -158,7 +158,7 @@ def extract_inter_cluster_edges(tree: dict, leaf_labels: torch.Tensor, edge_inde
         f"{intra_count} intra edges are ignored. Distinct tree-node pairs={counts.numel()}" )
 
 def _child_of(tree, ancestor_tnid, descendant_tnid):
-    """Direct child of `ancestor_tnid` whose subtree contains `descendant_tnid`."""
+    """Direct child of 'ancestor_tnid' whose subtree contains 'descendant_tnid'."""
     cur = descendant_tnid
     while cur != ancestor_tnid:
         parent = tree[cur].parent
@@ -281,7 +281,7 @@ def write_pt_files(tree: dict, leaf_labels: torch.Tensor, x: torch.Tensor, edge_
 
 
 def _cluster_id_in_parent(tree, nid):
-    """The node's index in its parent's `children` list. -1 for root."""
+    """The node's index in its parent's 'children' list. -1 for root."""
     node = tree[nid]
     if node.parent is None:
         return -1
