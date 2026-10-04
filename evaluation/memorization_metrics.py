@@ -46,7 +46,7 @@ def self_overlap(gen_eis, return_std=False):
     pairs = list(combinations(range(len(gen_eis)), 2))
     if not pairs:
         return (None, None) if return_std else None
-    vals = [edge_overlap(gen_eis[i], gen_eis[j])["jaccard"] for i, j in pairs]
+    vals = [edge_overlap(gen_eis[i], gen_eis[j]) for i, j in pairs]
     if return_std:
         std = float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0
         return float(np.mean(vals)), std

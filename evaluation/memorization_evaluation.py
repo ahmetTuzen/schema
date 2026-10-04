@@ -145,8 +145,7 @@ def calculate_memorization_fidelity(args, cfg):
                     logger.warning(f"[{name}] no usable features (missing or dimension != {real_x.shape[1]}); skipping feature memorization.")
                 else:
                     pv = [nndr(real_x, gx) for gx in xs[:10]]
-                    row.update({f"privacy_{k}": float(np.mean([d[k] for d in pv])) for k in pv[0]})
-                    row["privacy_n_samples"] = len(pv)
+                    row.update({f"{k}": float(np.mean([d[k] for d in pv])) for k in pv[0]})
 
         results[name] = row
 

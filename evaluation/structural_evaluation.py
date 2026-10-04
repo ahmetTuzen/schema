@@ -46,10 +46,10 @@ def structural_fidelity(args, cfg):
 def calculate_topological_fidelity(cfg):
     topology_evaluations = TOPOLOGY_STRATEGY[cfg.dataset.graph.scale]
 
-    from utils import load_baselines, load_connectivity
+    from utils import load_baselines, data_to_igraph
 
     baselines = load_baselines(cfg)
-    baselines = {name: load_connectivity(data, directed=cfg.dataset.graph.mode) for name, data in baselines.items()}
+    baselines = {name: data_to_igraph(data, directed=cfg.dataset.graph.mode) for name, data in baselines.items()}
 
     leidens = {}
     results = {name: {} for name in baselines}

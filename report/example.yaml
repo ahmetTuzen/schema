@@ -1,0 +1,23 @@
+dataset:
+  name: citeseer
+  task: node_classification
+  graph:
+    mode: undirected
+    scale: paper_main
+  storage:
+    path: output/citeseer_original.pt
+    format: torch
+
+method:
+- name: Schema_0
+  output: output/citeseer/citeseer_v8_0.pt
+  format: torch
+- name: Schema_1
+  output: output/citeseer/citeseer_v8_1.pt
+  format: torch
+
+  .....
+
+- name: A_0
+  output: ...
+  format: torch

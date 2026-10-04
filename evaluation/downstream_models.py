@@ -16,7 +16,7 @@ SPARSE_ARCHS = {"sage", "gin", "sgc"}
 
 RANKING_ARCHS = [{"name": n, "num_layers": L} for L in (4, 3, 2, 1) for n in ("gcn", "sage", "gat", "gin", "sgc")]
 
-UTILITY_ARCHS = [{"name": n, "num_layers": L} for L in (2) for n in ("gcn", "sage", "gat",  "sgc")]
+UTILITY_ARCHS = [{"name": n, "num_layers": 2} for n in ("gcn", "sage", "gat",  "sgc")]
 
 
 class _GNN(torch.nn.Module):

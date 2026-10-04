@@ -90,8 +90,7 @@ Each directory contains its own `main.py` and argument configuration. Please ref
 If you want to use evaluation scripts, you need to install additional packages:
 
 ```bash
-pip install scikit-learn==1.9.0 orbit-count==0.1.0
-pip install omegaconf==2.3.1 tabulate==0.10.0
+pip install scikit-learn==1.9.0 orbit-count==0.1.0 omegaconf==2.3.1 tabulate==0.10.0
 ```
 
 There are additional metrics for structural fidelity, and orbit count is required by one of them. 
@@ -101,7 +100,7 @@ There are additional metrics for structural fidelity, and orbit count is require
 
 `python evaluation/main.py --evaluation-stage {structural|memorization|downstream} --yaml-location {yaml file} --csv-location {output location}`
 
-You also need YAML files to use the evaluation scripts. YAML files contain information about the paths of generated files, the reference graph, and evaluation details. You can find the example .yaml file under the /report folder.
+You also need YAML files to use the evaluation scripts. YAML files contain information about the paths of generated files, the reference graph, and evaluation details. You can find the example .yaml file under the /report folder. (`report/example.yaml`)
 
 
 To extract the reference graph(s), run 
@@ -125,6 +124,7 @@ We uploaded all generated .pt files along with the other baselines. You can down
 
 You can reproduce our experiments by running the following script, which includes the corresponding hyperparameters per dataset:
 
+`TODO`
 
 ## Citation
 
