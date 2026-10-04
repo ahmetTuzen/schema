@@ -43,10 +43,6 @@ def _adjacency(g):
     return A
 
 
-def load_igraph(data, directed=True, simplify=True):
-    """Load a PyG Data .pt and return an igraph.Graph built only from edge_index."""
-    return data_to_igraph(data, directed=directed, simplify=simplify)
-
 
 def data_to_igraph(data, directed=True, simplify=True):
     """PyG Data -> igraph.Graph. Uses edge_index only"""

@@ -27,16 +27,16 @@ TOPOLOGY_STRATEGY = {
 def structural_fidelity(args, cfg):
     size = cfg.dataset.graph.scale
     if args.evaluation_mode == "report":
-        logger.info(f"Printing topological fidelity report from existing results...")
+        logger.info("Printing topological fidelity report from existing results...")
         file_path = os.path.join(args.csv_location, "topological_fidelity", cfg.dataset.name + ".csv")
         topological_df = pd.read_csv(file_path)  
 
     elif args.evaluation_mode == "calculate" or args.evaluation_mode == "append":
-        logger.info(f"Calculating topological fidelity...")
+        logger.info("Calculating topological fidelity...")
         logger.info(f"Dataset size is {size}; {len(TOPOLOGY_STRATEGY[size])} different evaluation metrics will be computed (additional metrics may be included in the report).")
 
         topological_fidelity_results = calculate_topological_fidelity(cfg)
-        logger.info(f"Topological fidelity evaluation is completed. Saving .csv file, then reporting...")
+        logger.info("Topological fidelity evaluation is completed. Saving .csv file, then reporting...")
 
         topological_df, save_path = save_topological_fidelity(args, cfg, topological_fidelity_results)
         

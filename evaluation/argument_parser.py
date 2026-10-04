@@ -13,7 +13,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--yaml-location", type=str, default="report/yaml/citeseer.yaml", help="Location of the yaml file for evaluation configuration")
     parser.add_argument("--csv-location", type=str, default="report", help="Output directory for evaluation results in csv format")
 
-    parser.add_argument("--device", type=str, default="cuda", help="Device to run")
+    parser.add_argument("--device", type=str, default="cuda", help="Device to run (cuda only helpful for downstream evaluation)")
     parser.add_argument("--seed", type=int, default=0, help="Random seed for reproducibility")
     parser.add_argument("--deterministic", action="store_true", default=False, help="Enable strict CUDA determinism (way slower)")
 

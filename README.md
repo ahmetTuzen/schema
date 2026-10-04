@@ -75,10 +75,61 @@ The project consists of three main directories: `clustering`, `generation`, and 
 
 Each directory contains its own `main.py` and argument configuration. Please refer to the respective directory for usage details.
 
-Here you can find the basic usage:
+**Here you can find the basic usage:**
 
-python clustering/main.py --help
-python clustering/main.py --dataset cora_ml
+`python clustering/main.py --help`
+`python clustering/main.py --dataset cora_ml`
 
-python generation/main.py --help
-python generation/main.py --dataset cora_ml
+
+`python generation/main.py --help`
+`python generation/main.py --dataset cora_ml`
+
+
+### Evaluation
+
+If you want to use evaluation scripts, you need to install additional packages:
+
+```bash
+pip install scikit-learn==1.9.0 orbit-count==0.1.0
+pip install omegaconf==2.3.1 tabulate==0.10.0
+```
+
+There are additional metrics for structural fidelity, and orbit count is required by one of them. 
+
+
+**Evaluation usage:**
+
+`python evaluation/main.py --evaluation-stage {structural|memorization|downstream} --yaml-location {yaml file} --csv-location {output location}`
+
+You also need YAML files to use the evaluation scripts. YAML files contain information about the paths of generated files, the reference graph, and evaluation details. You can find the example .yaml file under the /report folder.
+
+
+To extract the reference graph(s), run 
+
+`python evaluation/original_extractor.py --dataset {dataset}`
+
+
+If you are not downloading the files below, you also need to use the following script to inherit labels for Schema:
+
+`python evaluation/attach_labels.py --original {original_extractor output} --targets-dir {scan_directory}`
+
+
+## Generated files
+
+We uploaded all generated .pt files along with the other baselines. You can download them here:
+
+`TODO`
+
+
+## Reproducibility
+
+You can reproduce our experiments by running the following script, which includes the corresponding hyperparameters per dataset:
+
+
+## Citation
+
+If this work is relevant to your research, please consider citing:
+
+```bibtex
+Will be added after the review process.
+```
