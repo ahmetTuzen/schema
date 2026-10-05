@@ -1,0 +1,49 @@
+# citeseer clustering
+python clustering/main.py --dataset citeseer --propagation_alpha 0.9 --branching_cap 32
+
+
+# citeseer generation
+# Consider suppressing warnings in edge training for this dataset by python generation/main.py ... 2> >(grep -v 'IntraEdge negative sampling undersampled')
+python generation/main.py --dataset citeseer \
+	--json-path ./output/clusters/citeseer/cluster_mapping.json --out-dir ./output/generation/citeseer \
+	--latent-dim 32 --dropout 0.25 --num-layers 4 --gen-chunk-size 128 \
+	--num-epochs 500 --inter-gen-cluster-threshold 0.1 --inter-budget-scale 4.0 
+
+
+# cora_ml clustering
+python clustering/main.py --dataset cora_ml --propagation_steps 2 --propagation_alpha 0.5 --branching_cap 8
+
+# cora_ml generation
+# Consider suppressing warnings in edge training for this dataset by python generation/main.py ... 2> >(grep -v 'IntraEdge negative sampling undersampled')
+python generation/main.py --dataset cora_ml \
+    --json-path ./output/clusters/cora_ml/cluster_mapping.json --out-dir ./output/generation/cora_ml \
+    --latent-dim 32 --dropout 0.2 --num-layers 3 --neg-ratio 2.0 --learning-rate 1e-4 
+
+
+# amazon_photo clustering
+python clustering/main.py --dataset amazon_photo
+
+# amazon_photo generation
+python generation/main.py --dataset amazon_photo \
+    --json-path ./output/clusters/amazon_photo/cluster_mapping.json --out-dir ./output/generation/amazon_photo \
+    --edge-emb-dim 32 --dropout 0.25 --nhead 2 --node-loss cosine --topk-nodes 2000 --inter-gen-cluster-threshold 0.1 \
+    --inter-budget-scale 0.5  --inter-noise 0.5
+
+# amazon_computers clustering
+python clustering/main.py --dataset amazon_computers
+
+# amazon_computers generation
+python generation/main.py --dataset amazon_computers \
+    --json-path ./output/clusters/amazon_computers/cluster_mapping.json --out-dir ./output/generation/amazon_computers \
+    --prior-weight 1.0 --latent-dim 128 --num-layers 4 --node-loss mse --inter-gen-cluster-threshold 0.2 \
+    --edge-emb-dim 128 --inter-neg-pool-frac 0.1 --learning-rate 5e-5 --inter-noise 0.5 --num-epochs 750
+
+
+# flickr clustering
+python clustering/main.py --dataset flickr --propagation_steps 4 --propagation_alpha 0.9 --branching_cap 32
+
+# flickr generation
+python generation/main.py --dataset flickr \
+    --json-path ./output/clusters/flickr/cluster_mapping.json --out-dir ./output/generation/flickr \
+    --edge-emb-dim 64 --dropout 0.5 --num-layers 4 --gen-chunk-size 128 --intra-max-pairs 10000 \
+    --inter-max-pairs 10000 --learning-rate 5e-4 --num-epochs 500 --kl-weight 1e-1 --inter-noise 0.5

@@ -344,6 +344,7 @@ def make_node_collate_fn(global_max_K: int):
             'S': torch.stack(S_list),
             'x': torch.stack(x_list),
             'mask': torch.stack(mask_list),
+            'graph_id': [b['graph_id'] for b in batch],
             }
 
     return collate
@@ -588,6 +589,7 @@ def make_intra_edge_collate_fn(global_max_K: int, degree_mode: str = 'directed')
             'neg_mask': torch.stack(nmask_neg_list), # negatives mask
             'edge_index_list': [b['edge_index'] for b in batch],
             'degree_mode': degree_mode, # 'directed' | 'undirected' # might change it to boolean later
+            'graph_id': [b['graph_id'] for b in batch],
             }
 
     return collate

@@ -292,3 +292,19 @@ def inter_edge_training(args, x_mean: torch.Tensor, x_std: torch.Tensor, skip_tr
     logger.info(f"[inter training] saved checkpoint to {ckpt_path}")
 
     return model, inter_loader
+
+
+@torch.no_grad()
+def save_reconstructed_x(args, node_generator, dataloader, x_mean, x_std):
+    binary = getattr(args, 'feature_type', 'continuous') == 'binary'
+    out = {}
+    for batch in dataloader:
+        batch = _move_batch(batch, args.device)
+        pred = node_generator.generate(batch['x_pool'], batch['S'], mask=batch['mask'], noise=0.0)
+        x = (torch.sigmoid(pred) > 0.5).float() if binary else pred * x_std + x_mean
+        for b, gid in enumerate(batch['graph_id']):
+            n = int(batch['mask'][b].sum())
+            out[gid] = {'x': x[b, :n].cpu()}
+    path = f"{args.out_dir}/{args.dataset}_{args.node_generator}_reconstructed.pt"
+    torch.save(out, path)
+    logger.info(f"[save_reconstructed_x] saved reconstructed {'binary' if binary else 'continuous'} features for {len(out)} graphs to {path}")

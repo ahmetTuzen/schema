@@ -17,6 +17,9 @@ def run_generation(args, node_generator, intra_model, inter_model, node_dataload
         x_mean = x_mean,
         x_std = x_std,
         device = args.device,
+        node_noise = args.node_noise,
+        edge_noise = args.edge_noise,
+        inter_noise = args.inter_noise,
     )
 
     # parsing which versions to generate (1-8) from comma-separated string

@@ -17,7 +17,7 @@ def parse_args():
     clustering_parser.add_argument("--clustering_method", type=str, default="leiden", choices=["leiden", "louvain"], help="Clustering method to use")
     clustering_parser.add_argument("--branching_cap", type=int, default=16, help="Maximum branching factor for building upper tree.")
     clustering_parser.add_argument("--max_leaf_size", type=int, default=0, help="Split any leaf cluster larger than this by re-running community "
-                                   "detection on its induced subgraph. 0 to disable (In the paper, just used for IGB Medium)")
+                                   "detection on its induced subgraph. 0 to disable (In the paper, only used for IGB Medium)")
     clustering_parser.add_argument("--largest_cc", action="store_true", help="Proceed with largest connected component")
 
     # Soft assignment settings

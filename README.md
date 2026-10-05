@@ -115,16 +115,12 @@ If you are not downloading the files below, you also need to use the following s
 
 ## Generated files
 
-We uploaded all generated .pt files along with the other baselines. You can download them here:
-
-`TODO`
+We uploaded all generated .pt files along with the other baselines. You can download .zip file [here](https://figshare.com/s/3d199842f057b0ce21bf).
 
 
 ## Reproducibility
 
-You can reproduce our experiments by running the following script, which includes the corresponding hyperparameters per dataset:
-
-`TODO`
+You can reproduce our experiments by running the commands in report/commands, which include the corresponding hyperparameters for each dataset.
 
 ## Citation
 

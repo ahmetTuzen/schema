@@ -43,7 +43,8 @@ def _build_parser() -> argparse.ArgumentParser:
     node_parser = parser.add_argument_group("Node generation")
     node_parser.add_argument("--num-layers", type=int, default=2, help="Depth of node-generator backbone")
     node_parser.add_argument("--nhead", type=int, default=4, help="Attention heads for transformer")
-    node_parser.add_argument("--noise-during-training", action="store_true", help="Inject noise in forward() so noise_proj is trained")
+    node_parser.add_argument("--noise-during-training", action=argparse.BooleanOptionalAction, default=True, 
+                                help="Inject noise in forward() so noise_proj is trained (disable with --no-noise-during-training)")
     node_parser.add_argument("--train-noise", type=float, default=1.0, help="Noise used during training when noise_during_training is set")
     node_parser.add_argument("--node-loss", type=str, default="huber", choices=["mse", "mae", "huber", "cosine", "combined"], help="Reconstruction loss for the node generator")
     node_parser.add_argument("--huber-delta", type=float, default=1.0, help="Delta parameter for Huber / combined loss")
@@ -59,12 +60,12 @@ def _build_parser() -> argparse.ArgumentParser:
     intra_parser.add_argument("--use-generated-x", action="store_true", default=False, help="Feed previously-generated node features to the edge model")
     intra_parser.add_argument("--intra-max-pairs", type=int, default=10000, help="Max positive pairs sampled per leaf per epoch in intra-edge training; 0 disables the cap. (GPU Memory)")
     intra_parser.add_argument("--intra-posterior-max-edges", type=int, default=1_000_000, help="Max edges fed to the VGAE posterior encoder at generation; 0 disables the cap.")
-    intra_parser.add_argument('--kl-weight', type=float, default=1e-3, help='KL weight for the VGAE intra-edge generator')
+    intra_parser.add_argument("--kl-weight", type=float, default=1e-3, help="KL weight for the VGAE intra-edge generator")
 
     # Inter-edge generation settings
     inter_parser = parser.add_argument_group("Inter-edge generation")
     inter_parser.add_argument("--prior-weight", type=float, default=0.5, help="Initial value for the learnable prior alpha")
-    inter_parser.add_argument("--s-threshold", type=float, default=0.1, help="Minimum S-membership for candidate filtering")
+    inter_parser.add_argument("--s-threshold", type=float, default=0.05, help="Minimum S-membership for candidate filtering")
     inter_parser.add_argument("--topk-nodes", type=int, default=500, help="Top-k cap on candidate filtering per cluster")
     inter_parser.add_argument("--inter-gen-cluster-threshold", type=float, default=0.05, help="Minimum S-membership for candidate filtering at generation time")
     inter_parser.add_argument("--inter-max-pairs", type=int, default=10000, help="Max positive inter-edge pairs sampled per subgraph per epoch; 0 disables the cap.")
@@ -76,7 +77,7 @@ def _build_parser() -> argparse.ArgumentParser:
     training_parser = parser.add_argument_group("Training")
     training_parser.add_argument("--batch-size", type=int, default=16)
     training_parser.add_argument("--learning-rate", type=float, default=1e-3)
-    training_parser.add_argument("--num-epochs", type=int, default=50, help="Default epoch count used for any stage not given its own override")
+    training_parser.add_argument("--num-epochs", type=int, default=250, help="Default epoch count used for any stage not given its own override")
     training_parser.add_argument("--node-epochs", type=int, default=None, help="Epochs for the node stage")
     training_parser.add_argument("--intra-epochs", type=int, default=None, help="Epochs for the intra-edge stage (defaults to --num-epochs)")
     training_parser.add_argument("--inter-epochs", type=int, default=None, help="Epochs for the inter-edge stage (defaults to --num-epochs)")
@@ -86,6 +87,9 @@ def _build_parser() -> argparse.ArgumentParser:
     gen_parser.add_argument("--num-generated", type=int, default=10, help="Number of samples to generate per version")
     gen_parser.add_argument("--versions", type=str, default="1,8", help="Comma-separated list of versions to generate, please check ablation study. best to leave at 1,8")
     gen_parser.add_argument("--out-dir", type=str, default=None, help="Dir for checkpoints + generated samples. Defaults to --data.")
+    gen_parser.add_argument("--node-noise", type=float, default=0.3, help="Noise for node features in generated-node versions (2,4,6,8)")
+    gen_parser.add_argument("--edge-noise", type=float, default=0.3, help="Noise for intra edges in generated-intra versions (3,4,7,8)")
+    gen_parser.add_argument("--inter-noise", type=float, default=0.3, help="Noise for inter edges in generated-inter versions (5,6,7,8)")
 
     # Runtime and reproducibility settings
     run_parser = parser.add_argument_group("Runtime and reproducibility")

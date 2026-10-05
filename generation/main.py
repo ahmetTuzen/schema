@@ -2,7 +2,7 @@ import logging
 
 from argument_parser import parse_args
 
-from trainer import node_training, intra_edge_training, inter_edge_training
+from trainer import node_training, intra_edge_training, inter_edge_training, save_reconstructed_x
 from generator import run_generation
 from utils import set_seed, stage_metrics
 
@@ -17,6 +17,8 @@ def main(args):
     
     with stage_metrics('node_train'):
         node_generator, node_dataloader, x_mean, x_std = node_training(args, skip_training=skip)
+    if getattr(args, 'use_generated_x', False):
+        save_reconstructed_x(args, node_generator, node_dataloader, x_mean, x_std)
     with stage_metrics('intra_train'):
         intra_model = intra_edge_training(args, x_mean, x_std, skip_training=skip)
     with stage_metrics('inter_train'):
